@@ -5,6 +5,8 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import Togglable from './components/Toggleable'
 import BlogForm from './components/BlogForm'
+import ShowBlog from './components/ShowBlog'
+import TogglableBlog from './components/TogglableBlog'
 
 class App extends React.Component {
   constructor(props) {
@@ -148,7 +150,9 @@ class App extends React.Component {
             Logout
           </button></p>
         {this.state.blogs.map(blog =>
-          <Blog key={blog._id} blog={blog} />
+        <TogglableBlog buttonLabel={blog.title} ref={component => this.ShowBlog = component}>  
+          <ShowBlog blog={blog} adder={blog.user.username}/>
+        </TogglableBlog>
         )}
         <h2>Add new blog</h2>
         {blogForm()}
@@ -158,3 +162,4 @@ class App extends React.Component {
 }
 
 export default App;
+//<Blog key={blog._id} blog={blog} />
