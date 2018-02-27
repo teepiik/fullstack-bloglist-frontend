@@ -3,6 +3,8 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import Togglable from './components/Toggleable'
+import BlogForm from './components/BlogForm'
 
 class App extends React.Component {
   constructor(props) {
@@ -40,6 +42,8 @@ class App extends React.Component {
       author: this.state.newBlogAuthor,
       url: this.state.newBlogUrl
     }
+    this.blogForm.toggleVisibility()
+
     const newBlog = await blogService.create(blogObject)
     this.setState({
       blogs: this.state.blogs.concat(newBlog),
@@ -90,40 +94,16 @@ class App extends React.Component {
   render() {
 
     const blogForm = () => (
-      <div>
-        <h2>Add new blog</h2>
-
-        <form onSubmit={this.addBlog}>
-        <div>
-              title
-              <input
-                type="text"
-                name="newBlogTitle"
-                value={this.state.newBlogTitle}
-                onChange={this.handleLoginFieldChange}
-              />
-            </div>
-            <div>
-              author
-              <input
-                type="text"
-                name="newBlogAuthor"
-                value={this.state.newBlogAuthor}
-                onChange={this.handleLoginFieldChange}
-              />
-            </div>
-            <div>
-              url
-              <input
-                type="text"
-                name="newBlogUrl"
-                value={this.state.newBlogUrl}
-                onChange={this.handleLoginFieldChange}
-              />
-            </div>
-          <button type="submit">create</button>
-        </form>
-      </div>
+      <Togglable buttonLabel="create" ref={component => this.blogForm = component}>
+        <BlogForm
+          onSubmit={this.addBlog}
+          newBlogTitle={this.state.newBlogTitle}
+          newBlogAuthor={this.state.newBlogAuthor}
+          newBlogUrl={this.state.newBlogUrl}
+          handleChange={this.handleLoginFieldChange}
+          visible={this.state.visible}
+        />
+      </Togglable>
     )
 
     if (this.state.user === null) {
@@ -170,6 +150,7 @@ class App extends React.Component {
         {this.state.blogs.map(blog =>
           <Blog key={blog._id} blog={blog} />
         )}
+        <h2>Add new blog</h2>
         {blogForm()}
       </div>
     );
