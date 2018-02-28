@@ -115,6 +115,9 @@ class App extends React.Component {
     this.render()
   }
 
+  handleAdder = (event) => {
+  }
+
   render() {
 
     const blogForm = () => (
@@ -173,7 +176,7 @@ class App extends React.Component {
           </button></p>
         {this.state.blogs.map(blog =>
         <TogglableBlog key={blog.id} buttonLabel={blog.title} ref={component => this.ShowBlog = component}>  
-          <ShowBlog blog={blog} adder={blog.user.username} handleRefresh={this.handleRefresh}/>
+          <ShowBlog blog={blog} handleRefresh={this.handleRefresh} currentUser={this.state.user}/>
         </TogglableBlog>
         )}
         <h2>Add new blog</h2>

@@ -8,10 +8,10 @@ const blogStyle = {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5
-  }
+}
 
 
-const ShowBlog = ({ blog, adder, handleRefresh}) => {
+const ShowBlog = ({ blog, adder, handleRefresh, currentUser }) => {
 
     const handleLike = async (event) => {
 
@@ -22,20 +22,56 @@ const ShowBlog = ({ blog, adder, handleRefresh}) => {
             likes: blog.likes + 1,
             user: blog.user
         }
-        await blogService.update(blog.id, updatedBlog)   
+        await blogService.update(blog.id, updatedBlog)
         handleRefresh()
     }
 
-    
+    const handleDelete = async (event) => {
+        const result = window.confirm('Are you sure to delete this?');
+        if (result) {
+            await blogService.delet(blog.id)
+            handleRefresh()
+        }
+
+    }
+
+    if (blog.user === null) {
+        return (
+            <div style={blogStyle}>
+                <ul>
+                    <li>{blog.title}</li>
+                    <li>{blog.url}</li>
+                    <li>{blog.likes} likes <button onClick={handleLike}>like</button> </li>
+                    <li>adder unknown</li>
+                    <li><button onClick={handleDelete}>Delete</button></li>
+                </ul>
+            </div>
+        )
+    }
+
+    if (blog.user._id === currentUser.id) {
+        return (
+            <div style={blogStyle}>
+                <ul>
+                    <li>{blog.title}</li>
+                    <li>{blog.url}</li>
+                    <li>{blog.likes} likes <button onClick={handleLike}>like</button> </li>
+                    <li>added by {blog.user.username}</li>
+                    <li><button onClick={handleDelete}>Delete</button></li>
+                </ul>
+            </div>
+        )
+    }
+
     return (
         <div style={blogStyle}>
-           <ul>
-               <li>{blog.title}</li>
-               <li>{blog.url}</li>
-               <li>{blog.likes} likes <button onClick={handleLike}>like</button> </li>
-               <li>added by {adder}</li>
-           </ul>
-    
+            <ul>
+                <li>{blog.title}</li>
+                <li>{blog.url}</li>
+                <li>{blog.likes} likes <button onClick={handleLike}>like</button> </li>
+                <li>added by {blog.user.username}</li>
+            </ul>
+
         </div>
     )
 }
