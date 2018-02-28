@@ -1,5 +1,4 @@
 import React from 'react'
-import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
@@ -24,10 +23,20 @@ class App extends React.Component {
     }
   }
 
+
   componentDidMount() {
-    blogService.getAll().then(blogs =>
+    /*blogService.getAll()
+    .then(blogs =>
       this.setState({ blogs })
-    )
+    )*/
+    const fetchEm = async () => {
+      const blogsToSort = await blogService.getAll()
+      blogsToSort.sort(function (a, b) {
+        return b.likes - a.likes;
+      });
+      this.setState({blogs: blogsToSort})
+    }
+    fetchEm()
 
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
@@ -54,6 +63,8 @@ class App extends React.Component {
       newBlogUrl: '',
       success: 'New blog created'
     })
+    await this.handleRefresh()
+
     setTimeout(() => {
       this.setState({ success: null })
     }, 5000)
@@ -91,6 +102,17 @@ class App extends React.Component {
   logout = (event) => {
     this.setState(this.user = null)
     window.localStorage.clear()
+  }
+
+  handleRefresh = async (event) => {
+    const reBlogs = await blogService.getAll()
+
+    reBlogs.sort(function (a, b) {
+      return b.likes - a.likes;
+    });
+
+    this.setState({ blogs: reBlogs })
+    this.render()
   }
 
   render() {
@@ -150,8 +172,8 @@ class App extends React.Component {
             Logout
           </button></p>
         {this.state.blogs.map(blog =>
-        <TogglableBlog buttonLabel={blog.title} ref={component => this.ShowBlog = component}>  
-          <ShowBlog blog={blog} adder={blog.user.username}/>
+        <TogglableBlog key={blog.id} buttonLabel={blog.title} ref={component => this.ShowBlog = component}>  
+          <ShowBlog blog={blog} adder={blog.user.username} handleRefresh={this.handleRefresh}/>
         </TogglableBlog>
         )}
         <h2>Add new blog</h2>

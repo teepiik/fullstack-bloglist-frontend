@@ -1,4 +1,5 @@
 import React from 'react'
+import blogService from '../services/blogs'
 
 // huom react inline css
 const blogStyle = {
@@ -9,16 +10,29 @@ const blogStyle = {
     marginBottom: 5
   }
 
-const ShowBlog = ({ blog, adder }) => {
 
-    // huom. lisääjä näkyy vasta kun blogi on ladattu uudestaan tietokannasta. Heti lisäyksen
-    // jälkeen näyttää tyhjää.
+const ShowBlog = ({ blog, adder, handleRefresh}) => {
+
+    const handleLike = async (event) => {
+
+        const updatedBlog = {
+            title: blog.title,
+            author: blog.author,
+            url: blog.url,
+            likes: blog.likes + 1,
+            user: blog.user
+        }
+        await blogService.update(blog.id, updatedBlog)   
+        handleRefresh()
+    }
+
+    
     return (
         <div style={blogStyle}>
            <ul>
                <li>{blog.title}</li>
                <li>{blog.url}</li>
-               <li>{blog.likes} likes <button onClick={console.log('plus 1')}>like</button> </li>
+               <li>{blog.likes} likes <button onClick={handleLike}>like</button> </li>
                <li>added by {adder}</li>
            </ul>
     
