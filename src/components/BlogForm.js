@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const BlogForm = ({ onSubmit, handleChange, newBlogTitle, newBlogAuthor, newBlogUrl }) => {
     return (
@@ -36,5 +37,13 @@ const BlogForm = ({ onSubmit, handleChange, newBlogTitle, newBlogAuthor, newBlog
         </div>
     )
 }
+
+BlogForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    handleChange: PropTypes.func.isRequired,
+    newBlogTitle: PropTypes.string.isRequired,
+    newBlogAuthor: PropTypes.string.isRequired,
+    newBlogUrl: PropTypes.string.isRequired
+  }
 
 export default BlogForm

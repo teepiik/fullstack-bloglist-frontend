@@ -1,5 +1,6 @@
 import React from 'react'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
 // huom react inline css
 const blogStyle = {
@@ -11,7 +12,7 @@ const blogStyle = {
 }
 
 
-const ShowBlog = ({ blog, adder, handleRefresh, currentUser }) => {
+const ShowBlog = ({ blog, handleRefresh, currentUser }) => {
 
     const handleLike = async (event) => {
 
@@ -75,5 +76,12 @@ const ShowBlog = ({ blog, adder, handleRefresh, currentUser }) => {
         </div>
     )
 }
+
+ShowBlog.propTypes = {
+    handleRefresh: PropTypes.func.isRequired,
+    blog: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired
+  }
+
 
 export default ShowBlog
