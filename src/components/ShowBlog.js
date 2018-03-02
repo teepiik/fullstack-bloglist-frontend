@@ -41,6 +41,7 @@ const ShowBlog = ({ blog, handleRefresh, currentUser }) => {
             <div style={blogStyle}>
                 <ul>
                     <li>{blog.title}</li>
+                    <li>{blog.author}</li>
                     <li>{blog.url}</li>
                     <li>{blog.likes} likes <button onClick={handleLike}>like</button> </li>
                     <li>adder unknown</li>
@@ -55,6 +56,7 @@ const ShowBlog = ({ blog, handleRefresh, currentUser }) => {
             <div style={blogStyle}>
                 <ul>
                     <li>{blog.title}</li>
+                    <li>{blog.author}</li>
                     <li>{blog.url}</li>
                     <li>{blog.likes} likes <button onClick={handleLike}>like</button> </li>
                     <li>added by {blog.user.username}</li>
@@ -68,6 +70,7 @@ const ShowBlog = ({ blog, handleRefresh, currentUser }) => {
         <div style={blogStyle}>
             <ul>
                 <li>{blog.title}</li>
+                <li>{blog.author}</li>
                 <li>{blog.url}</li>
                 <li>{blog.likes} likes <button onClick={handleLike}>like</button> </li>
                 <li>added by {blog.user.username}</li>
